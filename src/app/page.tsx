@@ -8,7 +8,6 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    console.log("fetching advocates...");
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
@@ -44,54 +43,72 @@ export default function Home() {
   };
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term">{searchTerm}</span>
-        </p>
+    <main className="p-6 max-w-7xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        Solace Advocates
+      </h1>
+
+      <div className="mb-6 space-y-2">
+        <label className="block text-sm font-medium text-gray-600">
+          Search Advocates
+        </label>
         <input
-          style={{ border: "1px solid black" }}
+          type="text"
+          className="w-full p-2 border border-blue-300 rounded focus:border-blue-300"
+          placeholder="Enter name, city, degree, etc..."
           onChange={onChange}
           value={searchTerm}
         />
-        <button onClick={onClick}>Reset Search</button>
+        <p className="text-sm text-gray-500">
+          Searching for: <span className="font-semibold">{searchTerm}</span>
+        </p>
+        <button
+          onClick={onClick}
+          className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Reset Search
+        </button>
       </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate, i) => {
-            return (
+
+      <div>
+        <table>
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-4 py-2 border">First Name</th>
+              <th className="px-4 py-2 border">Last Name</th>
+              <th className="px-4 py-2 border">City</th>
+              <th className="px-4 py-2 border">Degree</th>
+              <th className="px-4 py-2 border">Specialties</th>
+              <th className="px-4 py-2 border">Experience</th>
+              <th className="px-4 py-2 border">Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredAdvocates.map((advocate, i) => (
               <tr key={i}>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s, i) => (
-                    <div key={i}>{s}</div>
+                <td className="px-4 py-2 border">{advocate.firstName}</td>
+                <td className="px-4 py-2 border">{advocate.lastName}</td>
+                <td className="px-4 py-2 border">{advocate.city}</td>
+                <td className="px-4 py-2 border">{advocate.degree}</td>
+                <td className="px-4 py-2 border space-y-1">
+                  {advocate.specialties.map((s, j) => (
+                    <div
+                      key={j}
+                      className="text-xs bg-gray-100 px-2 py-1 rounded"
+                    >
+                      {s}
+                    </div>
                   ))}
                 </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
+                <td className="px-4 py-2 border text-center">
+                  {advocate.yearsOfExperience}
+                </td>
+                <td className="px-4 py-2 border">{advocate.phoneNumber}</td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }
